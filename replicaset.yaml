@@ -17,4 +17,4 @@ spec:
       containers:
         - name: myapp-container
           image: busybox
-          command: ["sh", "-c", "echo Hello AAP! from $HOSTNAME && sleep 3600"]
+          command: ["sh", "-c", "echo Hello World! from $HOSTNAME && sleep 3600"]
