@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
     - name: myapp-container
-      image: busybox
+      image: quay.io/bhouse/busybox:latest
       command: ["sh", "-c", "echo Hello World! && sleep 3600"]
       resources:
         requests:
