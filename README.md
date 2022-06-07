@@ -94,3 +94,27 @@ https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-read
 #### `ReplicaSet`
 
 #### `Deployment`
+
+### Networking
+
+#### `Service`
+
+#### `Route`
+
+#### `Ingress`
+
+#### `IngressClass`
+
+### Configuration
+
+#### `ConfigMap`
+
+#### `Secret`
+
+### Persistence
+
+#### `PersistentVolume`
+
+#### `PersistentVolumeClaim`
+
+#### `StorageClass`
