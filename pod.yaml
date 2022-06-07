@@ -9,3 +9,6 @@ spec:
     - name: myapp-container
       image: busybox
       command: ["sh", "-c", "echo Hello World! && sleep 3600"]
+      resources:
+        requests:
+          memory: 128mb

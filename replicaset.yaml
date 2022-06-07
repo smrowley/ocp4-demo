@@ -16,5 +16,5 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: busybox
+          image: quay.io/bhouse/busybox:latest
           command: ["sh", "-c", "echo Hello World! from $HOSTNAME && sleep 3600"]
