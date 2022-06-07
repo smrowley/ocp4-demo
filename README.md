@@ -38,6 +38,9 @@ Storing signatures
 
 When working with images, it is typical to use a "base image" that contains common libraries, and "extend" it with our unique application binaries and configuration.
 
+## Container Files Overview
+
+
 ## Kubernetes Overview
 
 Container tooling such as Docker or podman makes it easy to run containers on a single host. However, in the enterprise, we need to orchestrate applications at large scale with high availability and other features. This is where Kubernetes comes into play.
