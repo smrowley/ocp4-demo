@@ -84,7 +84,7 @@ differs from the `COPY`instruction in that `ADD` also has the ability to unzip f
 
 4.CMD will be overridden when running the container with alternative arguments.
 
-Once your Container file is written you can execute `docker build -t php-hello .` and `docker run --name hello -p 8080:8080 -d php-hello` and you should see your 
+Once your Container file is written you can execute `podman build -t php-hello .` and `podman run --name hello -p 8080:8080 -d php-hello` and you should see your 
 PHP hello world container running! 
 
 ## Kubernetes Overview
