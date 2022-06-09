@@ -38,6 +38,55 @@ Storing signatures
 
 When working with images, it is typical to use a "base image" that contains common libraries, and "extend" it with our unique application binaries and configuration.
 
+## Container Files Overview
+We use Container Files as a mechanism to automate the image building process. Container Files contain a list of commands that our container tooling uses while creating an image. The Containerfile (or Dockerfile) must be stored in the application directory if you are packaging application code and building an image with it. The general structure of a Containerfile is as such, where the Containerfile is created for a sample PHP application:
+
+```
+
+FROM registry.access.redhat.com/ubi8/ubi:8.1
+
+RUN yum --disableplugin=subscription-manager -y module enable php:7.3 \
+  && yum --disableplugin=subscription-manager -y install httpd php \
+  && yum --disableplugin=subscription-manager clean all
+
+ADD index.php /var/www/html
+
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
+  && sed -i 's/listen.acl_users = apache,nginx/listen.acl_users =/' /etc/php-fpm.d/www.conf \
+  && mkdir /run/php-fpm \
+  && chgrp -R 0 /var/log/httpd /var/run/httpd /run/php-fpm \
+  && chmod -R g=u /var/log/httpd /var/run/httpd /run/php-fpm
+
+EXPOSE 8080
+USER 1001
+CMD php-fpm & httpd -D FOREGROUND
+
+
+```
+
+The `FROM` instruction specifies the base image for the subsequent instructions, in this case our image is the Red Hat universal base image.
+
+The `RUN` instruction executes commands as part of the build process for our new image. It is reccomended to not have multiple `RUN` instructions and to rather
+chain them to minimize the number of layers you bundle with your finished image.
+
+The `ADD`instruction copies new files or directories and adds them to the filesystem of the image which here is specified at /var/www/html. The `ADD`instruction 
+differs from the `COPY`instruction in that `ADD` also has the ability to unzip files.
+
+`EXPOSE` is used to inform your container tooling as to what network ports the contianer listens to at runtime. It doesn't publish the port automatically, as you would have to do this with a `-p` in your container tooling to publish and map one or more ports.
+
+`CMD` and `ENTRYPOINT` both define what command gets executed when running a container. There are a set of rules attached to these as per the Docker documentation:
+
+1.Dockerfile should specify at least one of CMD or ENTRYPOINT commands.
+
+2.ENTRYPOINT should be defined when using the container as an executable.
+
+3.CMD should be used as a way of defining default arguments for an ENTRYPOINT command or for executing an ad-hoc command in a container.
+
+4.CMD will be overridden when running the container with alternative arguments.
+
+Once your Container file is written you can execute `podman build -t php-hello .` and `podman run --name hello -p 8080:8080 -d php-hello` and you should see your 
+PHP hello world container running! 
+
 ## Kubernetes Overview
 
 Container tooling such as Docker or podman makes it easy to run containers on a single host. However, in the enterprise, we need to orchestrate applications at large scale with high availability and other features. This is where Kubernetes comes into play.
